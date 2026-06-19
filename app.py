@@ -177,11 +177,7 @@ with st.sidebar:
         
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Settings Card
-    st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
-    st.markdown("### Settings")
-    debug_mode = st.checkbox("🔍 Developer / Debug Mode", value=True, help="Shows classification results, generated SQL, and vector matches.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    debug_mode = False
     
     # Sample Questions
     st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
