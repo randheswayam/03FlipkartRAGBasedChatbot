@@ -3,8 +3,9 @@ import pandas as pd
 import json
 import os
 
-# Import modules from src
-from src.config import GROQ_API_KEY
+from dotenv import load_dotenv
+load_dotenv(override=True)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 from src.router import classify_route
 from src.vector_store import FAQRetriever
 from src.database import query_products
@@ -22,7 +23,6 @@ st.markdown("""
 <style>
     /* Main Background and Fonts */
     .stApp {
-        background-color: #f1f3f6;
         font-family: 'Inter', -apple-system, sans-serif;
     }
     
@@ -71,11 +71,11 @@ st.markdown("""
         border-bottom-right-radius: 4px;
     }
     .assistant-bubble {
-        background-color: white;
-        color: #212121;
+        background-color: var(--secondary-background-color);
+        color: var(--text-color);
         margin-right: auto;
         border-bottom-left-radius: 4px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid rgba(128, 128, 128, 0.2);
     }
     .route-badge {
         font-size: 0.75rem;
@@ -101,7 +101,7 @@ st.markdown("""
     /* Custom input box border and button colors */
     div.stTextInput > div > div > input {
         border-radius: 8px;
-        border: 2px solid #e0e0e0;
+        border: 2px solid rgba(128, 128, 128, 0.2);
     }
     div.stTextInput > div > div > input:focus {
         border-color: #2874f0;
@@ -110,10 +110,11 @@ st.markdown("""
     
     /* Sidebar Card Layout */
     .sidebar-card {
-        background-color: white;
+        background-color: var(--secondary-background-color);
+        color: var(--text-color);
         padding: 1.2rem;
         border-radius: 10px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid rgba(128, 128, 128, 0.2);
         margin-bottom: 1rem;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
