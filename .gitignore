@@ -1,0 +1,23 @@
+# Environment variables (contains secret API keys)
+.env
+
+# Databases and data stores
+db.sqlite
+chroma_db_store/
+
+# Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Streamlit config
+.streamlit/
