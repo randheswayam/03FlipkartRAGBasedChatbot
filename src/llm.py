@@ -5,7 +5,7 @@ from src.config import GROQ_API_KEY, GROQ_MODEL
 # Initialize Groq client
 # If GROQ_API_KEY is not set (e.g., during initialization/template step), we can handle it gracefully.
 client = None
-if GROQ_API_KEY and GROQ_API_KEY != "your_groq_api_key_here" and GROQ_API_KEY.strip() != "":
+if GROQ_API_KEY and GROQ_API_KEY != "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" and GROQ_API_KEY.strip() != "":
     client = Groq(api_key=GROQ_API_KEY)
 
 def get_client():
@@ -16,7 +16,7 @@ def get_client():
         from dotenv import load_dotenv
         load_dotenv(override=True)
         api_key = os.getenv("GROQ_API_KEY")
-        if api_key and api_key != "your_groq_api_key_here" and api_key.strip() != "":
+        if api_key and api_key != "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" and api_key.strip() != "":
             client = Groq(api_key=api_key)
         else:
             raise ValueError("Groq API Key is not set or is still the default placeholder in .env. Please set GROQ_API_KEY in your .env file.")
