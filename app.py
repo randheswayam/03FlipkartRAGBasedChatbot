@@ -1,7 +1,8 @@
+import os
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import streamlit as st
 import pandas as pd
 import json
-import os
 
 from dotenv import load_dotenv
 load_dotenv(override=True)
