@@ -11,6 +11,30 @@ from src.vector_store import FAQRetriever
 from src.database import query_products
 from src.llm import generate_sql_query, generate_response
 
+import re
+
+def format_message(text: str, is_user: bool = False) -> str:
+    """Converts basic markdown (bold, list items, links) into HTML to render correctly inside custom styled bubbles."""
+    # Convert bold (**text**) to HTML strong
+    text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
+    
+    # Convert bullet points (* item or - item) at start of lines to list styles or bullet characters
+    text = re.sub(r'^\s*[\*\-]\s+', '• ', text, flags=re.MULTILINE)
+    
+    # Link color depends on bubble background: Flipkart yellow for user (blue), high visibility sky blue for assistant
+    link_color = "#ffe500" if is_user else "#388eff"
+    
+    text = re.sub(
+        r'\[([^\]]+)\]\((https?://[^\)]+)\)', 
+        f'<a href="\\2" target="_blank" style="color: {link_color}; text-decoration: underline; font-weight: 600;">\\1</a>', 
+        text
+    )
+    
+    # Convert newlines to HTML break tags
+    text = text.replace('\n', '<br>')
+    
+    return text
+
 # Page Configuration
 st.set_page_config(
     page_title="Flipkart AI Assistant",
@@ -196,7 +220,7 @@ st.markdown("""
 # Display Chat History
 for msg in st.session_state.messages:
     if msg["role"] == "user":
-        st.markdown(f'<div class="chat-bubble user-bubble">{msg["content"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="chat-bubble user-bubble">{format_message(msg["content"], is_user=True)}</div>', unsafe_allow_html=True)
     else:
         # Show route badge if debug is enabled
         badge_html = ""
@@ -209,7 +233,7 @@ for msg in st.session_state.messages:
             else:
                 badge_html = '<div class="route-badge route-fallback">⚠️ Fallback</div>'
                 
-        st.markdown(f'<div class="chat-bubble assistant-bubble">{badge_html}{msg["content"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="chat-bubble assistant-bubble">{badge_html}{format_message(msg["content"], is_user=False)}</div>', unsafe_allow_html=True)
         
         # Show debug expander if checked and debug_info is available
         if debug_mode and "debug_info" in msg:
@@ -232,7 +256,7 @@ user_input = st.chat_input("Ask about order policies, payment methods, or search
 
 if user_input:
     # 1. Display User Message
-    st.markdown(f'<div class="chat-bubble user-bubble">{user_input}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="chat-bubble user-bubble">{format_message(user_input, is_user=True)}</div>', unsafe_allow_html=True)
     
     # Check if API is connected
     if not is_key_valid:

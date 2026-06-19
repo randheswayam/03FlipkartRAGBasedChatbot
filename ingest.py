@@ -68,9 +68,20 @@ def ingest_products():
     if not os.path.exists(PRODUCT_CSV_PATH):
         raise FileNotFoundError(f"Product CSV file not found at {PRODUCT_CSV_PATH}")
         
-    # Load Product data
+    # Load primary Product data
     df_products = pd.read_csv(PRODUCT_CSV_PATH)
-    print(f"Loaded products shape: {df_products.shape}")
+    print(f"Loaded primary products shape: {df_products.shape}")
+    
+    # Check for additional scraped product data in web-scrapping folder
+    scraped_csv = "web-scrapping/flipkart_product_data.csv"
+    if os.path.exists(scraped_csv):
+        try:
+            df_scraped = pd.read_csv(scraped_csv)
+            print(f"Loaded scraped products shape: {df_scraped.shape}")
+            df_products = pd.concat([df_products, df_scraped], ignore_index=True)
+            print(f"Combined products shape: {df_products.shape}")
+        except Exception as e:
+            print(f"Warning: Could not load scraped products from {scraped_csv}: {e}")
     
     # Clean and transform
     df_products.dropna(subset=['title', 'price'], inplace=True)
